@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sneaker Selection</title>
-
 <style>
 body{margin:0;font-family:Arial;background:#f4f4f4}
 header{background:#111;color:#fff;padding:20px;text-align:center}
@@ -129,7 +128,7 @@ select{
 </div>
 
 <script>
-// 5 sneakers
+// Sneakers
 const sneakers = [
   "Nike Air Force",
   "Adidas Yeezy",
@@ -138,48 +137,53 @@ const sneakers = [
   "Puma Runner"
 ];
 
-// Initialize random stock (2-5)
+// Random stock 2-5
 let stock = sneakers.map(()=>Math.floor(Math.random()*4)+2);
 
-// Color images for each sneaker (replace YOUR_UPLOAD_LINK with your own)
+// Local src paths for each sneaker & color + original image
 const sneakerImages = {
   "Nike Air Force": {
-    "Black": "https://YOUR_UPLOAD_LINK/black_nike_airforce.png",
-    "White": "https://YOUR_UPLOAD_LINK/white_nike_airforce.png",
-    "Red": "https://YOUR_UPLOAD_LINK/red_nike_airforce.png"
+    "Original": "images/nike_airforce/original.jpg",
+    "Black": "images/nike_airforce/black.jpg",
+    "White": "images/nike_airforce/white.jpg",
+    "Red": "images/nike_airforce/red.jpg"
   },
   "Adidas Yeezy": {
-    "Black": "https://YOUR_UPLOAD_LINK/black_yeezy.png",
-    "White": "https://YOUR_UPLOAD_LINK/white_yeezy.png",
-    "Red": "https://YOUR_UPLOAD_LINK/red_yeezy.png"
+    "Original": "images/adidas_yeezy/original.jpg",
+    "Black": "images/adidas_yeezy/black.jpg",
+    "White": "images/adidas_yeezy/white.jpg",
+    "Red": "images/adidas_yeezy/red.jpg"
   },
   "Air Jordan 1": {
-    "Black": "https://YOUR_UPLOAD_LINK/black_jordan1.png",
-    "White": "https://YOUR_UPLOAD_LINK/white_jordan1.png",
-    "Red": "https://YOUR_UPLOAD_LINK/red_jordan1.png"
+    "Original": "images/air_jordan_1/original.jpg",
+    "Black": "images/air_jordan_1/black.jpg",
+    "White": "images/air_jordan_1/white.jpg",
+    "Red": "images/air_jordan_1/red.jpg"
   },
   "Nike Air Max": {
-    "Black": "https://YOUR_UPLOAD_LINK/black_airmax.png",
-    "White": "https://YOUR_UPLOAD_LINK/white_airmax.png",
-    "Red": "https://YOUR_UPLOAD_LINK/red_airmax.png"
+    "Original": "images/nike_air_max/original.jpg",
+    "Black": "images/nike_air_max/black.jpg",
+    "White": "images/nike_air_max/white.jpg",
+    "Red": "images/nike_air_max/red.jpg"
   },
   "Puma Runner": {
-    "Black": "https://YOUR_UPLOAD_LINK/black_puma.png",
-    "White": "https://YOUR_UPLOAD_LINK/white_puma.png",
-    "Red": "https://YOUR_UPLOAD_LINK/red_puma.png"
+    "Original": "images/puma_runner/original.jpg",
+    "Black": "images/puma_runner/black.jpg",
+    "White": "images/puma_runner/white.jpg",
+    "Red": "images/puma_runner/red.jpg"
   }
 };
 
 const grid = document.getElementById("gridHome");
 const sectionsDiv = document.getElementById("sections");
 
-// Generate Home Grid + Sections
-sneakers.forEach((name,i) => {
-  // Home Grid
+// Generate home grid and sections
+sneakers.forEach((name,i)=>{
+  // Grid
   const card = document.createElement("div");
-  card.className = "card";
-  card.innerHTML = `
-    <img src="https://via.placeholder.com/300x200?text=${name.replace(" ","+")}">
+  card.className="card";
+  card.innerHTML=`
+    <img src="${sneakerImages[name]['Original']}" alt="${name}">
     <h3>${name}</h3>
     <div class="btn" id="btn${i}">Select Now</div>
   `;
@@ -187,9 +191,9 @@ sneakers.forEach((name,i) => {
 
   // Section
   const section = document.createElement("div");
-  section.className = "section";
-  section.id = "sec"+i;
-  section.innerHTML = `
+  section.className="section";
+  section.id="sec"+i;
+  section.innerHTML=`
     <div class="box">
       <h3>${name}</h3>
       <select id="size${i}">
@@ -225,49 +229,43 @@ sneakers.forEach((name,i) => {
   `;
   sectionsDiv.appendChild(section);
 
-  // Button click -> open section
-  document.getElementById("btn"+i).addEventListener("click", ()=>{
-    openSection(i);
-  });
+  // Open section on click
+  document.getElementById("btn"+i).addEventListener("click",()=>openSection(i));
 
-  // Update summary when select changes
-  const sizeSelect = section.querySelector(`#size${i}`);
-  const colorSelect = section.querySelector(`#color${i}`);
-  sizeSelect.addEventListener("change", ()=> updateSummary(i));
-  colorSelect.addEventListener("change", ()=> updateSummary(i));
+  // Update summary
+  const sizeSelect=section.querySelector(`#size${i}`);
+  const colorSelect=section.querySelector(`#color${i}`);
+  sizeSelect.addEventListener("change",()=>updateSummary(i));
+  colorSelect.addEventListener("change",()=>updateSummary(i));
 });
 
 function openSection(i){
-  document.querySelectorAll(".section").forEach(s => s.style.display="none");
+  document.querySelectorAll(".section").forEach(s=>s.style.display="none");
   document.getElementById("sec"+i).style.display="block";
   document.getElementById("sec"+i).scrollIntoView({behavior:"smooth"});
 }
 
 function updateSummary(i){
-  const size = document.getElementById("size"+i).value;
-  const color = document.getElementById("color"+i).value;
-  document.getElementById("summary"+i).innerText = `Selected: ${size} | ${color}`;
-
-  // Update summary image if color selected
-  const name = sneakers[i];
-  if(color !== "Select"){
-    document.getElementById(`summaryImage${i}`).src = sneakerImages[name][color];
-    document.getElementById(`summaryImage${i}`).style.display = "block";
+  const size=document.getElementById("size"+i).value;
+  const color=document.getElementById("color"+i).value;
+  document.getElementById("summary"+i).innerText=`Selected: ${size} | ${color}`;
+  const name=sneakers[i];
+  if(color!=="Select"){
+    document.getElementById(`summaryImage${i}`).src=sneakerImages[name][color];
+    document.getElementById(`summaryImage${i}`).style.display="block";
   }
 }
 
 function checkout(name,i){
-  let s = document.getElementById("size"+i).value;
-  let c = document.getElementById("color"+i).value;
-
+  const s=document.getElementById("size"+i).value;
+  const c=document.getElementById("color"+i).value;
   if(s.includes("Select") || c.includes("Select")){
     alert("Please select size and color");
     return;
   }
-
   // Reduce stock but not below 1
-  if(stock[i] > 1) stock[i]--;
-  document.getElementById("stock"+i).innerText = `Only ${stock[i]} left!`;
+  if(stock[i]>1) stock[i]--;
+  document.getElementById("stock"+i).innerText=`Only ${stock[i]} left!`;
 
   document.getElementById("bar"+i).style.width="100%";
   document.getElementById("loading").style.display="flex";
